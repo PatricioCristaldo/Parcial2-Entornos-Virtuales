@@ -5,26 +5,40 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class ObjetivoTaller : MonoBehaviour
 {
     [SerializeField] private XRSocketInteractor[] socketsRequeridos;
-    [SerializeField] private TextMeshProUGUI textoPanel;
 
-    [Header("Mensajes")]
-    [SerializeField] private string textoInicial = "Bienvenido al Taller 3D";
-    [SerializeField] private string textoCompletado = "Felicidades ordenaste el Taller 3D";
+    [Header("Textos del Panel")]
+    [SerializeField] private TextMeshProUGUI textoDescripcion;
+    [SerializeField] private TextMeshProUGUI textoMision;
 
+    [Header("Mensajes al Completar")]
+    [SerializeField] private string descripcionCompletada = "Has equipado al maniquí y ordenado la forja del Jarl.";
+    [SerializeField] private string misionCompletada = "¡ARSENAL LISTO PARA LA BATALLA!";
+    [SerializeField] private Color colorCompletado = new Color(0.1f, 0.55f, 0.15f);
+
+    private string descripcionInicial;
+    private string misionInicial;
+    private Color colorDescripcionInicial;
+    private Color colorMisionInicial;
     private bool objetivoCumplido;
 
     private void Start()
     {
-        if (textoPanel != null)
+        if (textoDescripcion != null)
         {
-            textoPanel.text = textoInicial;
-            textoPanel.color = Color.white;
+            descripcionInicial = textoDescripcion.text;
+            colorDescripcionInicial = textoDescripcion.color;
+        }
+
+        if (textoMision != null)
+        {
+            misionInicial = textoMision.text;
+            colorMisionInicial = textoMision.color;
         }
     }
 
     private void Update()
     {
-        if (socketsRequeridos == null || socketsRequeridos.Length == 0 || textoPanel == null)
+        if (socketsRequeridos == null || socketsRequeridos.Length == 0)
             return;
 
         bool todosOcupados = true;
@@ -41,14 +55,34 @@ public class ObjetivoTaller : MonoBehaviour
         if (todosOcupados && !objetivoCumplido)
         {
             objetivoCumplido = true;
-            textoPanel.text = textoCompletado;
-            textoPanel.color = Color.green;
+
+            if (textoDescripcion != null)
+            {
+                textoDescripcion.text = descripcionCompletada;
+                textoDescripcion.color = colorCompletado;
+            }
+
+            if (textoMision != null)
+            {
+                textoMision.text = misionCompletada;
+                textoMision.color = colorCompletado;
+            }
         }
         else if (!todosOcupados && objetivoCumplido)
         {
             objetivoCumplido = false;
-            textoPanel.text = textoInicial;
-            textoPanel.color = Color.white;
+
+            if (textoDescripcion != null)
+            {
+                textoDescripcion.text = descripcionInicial;
+                textoDescripcion.color = colorDescripcionInicial;
+            }
+
+            if (textoMision != null)
+            {
+                textoMision.text = misionInicial;
+                textoMision.color = colorMisionInicial;
+            }
         }
     }
 }
